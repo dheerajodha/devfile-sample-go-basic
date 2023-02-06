@@ -133,7 +133,7 @@ spec:
       runAfter:
       - clone-repository
       taskRef:
-        bundle: quay.io/redhat-appstudio-tekton-catalog/task-configure-build:0.1@sha256:787d29329a2ea1b618ddf0ec4cb208d7f3dbc5c969c6e61ea920fb063b09a477
+        bundle: quay.io/redhat-appstudio-tekton-catalog/task-configure-build:0.1@sha256:81ac1aca1901c3385cbc8c500b3a69f4a12485e295cb7003fab1f068632cf9b4
         name: configure-build
       when:
       - input: $(tasks.appstudio-init.results.build)
@@ -168,10 +168,8 @@ spec:
         value: $(params.dockerfile)
       - name: CONTEXT
         value: $(params.path-context)
-      - name: BUILD_EXTRA_ARGS
-        value: $(tasks.appstudio-configure-build.results.buildah-auth-param)
-      - name: PUSH_EXTRA_ARGS
-        value: $(tasks.appstudio-configure-build.results.buildah-auth-param)
+      - name: DOCKER_AUTH
+        value: $(tasks.appstudio-configure-build.results.docker-auth)
       - name: HERMETIC
         value: $(params.hermetic)
       - name: PREFETCH_INPUT
@@ -179,7 +177,7 @@ spec:
       runAfter:
       - prefetch-dependencies
       taskRef:
-        bundle: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:b4a1cf097be6b9c411ad3a1fdb4a48e598f92fce01627c4f5f0d85ee28767784
+        bundle: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:b80a1051ce11b27907d1785a2ea0cf788e59e96ea7585bf02867d83d78e985a5
         name: buildah
       when:
       - input: $(tasks.appstudio-init.results.build)
